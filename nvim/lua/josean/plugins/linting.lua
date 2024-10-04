@@ -11,6 +11,15 @@ return {
       typescriptreact = { "eslint_d" },
       svelte = { "eslint_d" },
       python = { "ruff" },
+      go = { "golangci-lint" },
+    }
+
+    lint.linters["golangci-lint"] = {
+      cmd = "golangci-lint",
+      args = { "run", "--out-format", "json" },
+      stdin = true,
+      stream = "stdout",
+      ignore_exitcode = true,
     }
 
     local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })

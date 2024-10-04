@@ -100,6 +100,7 @@ return {
           end,
         })
       end,
+
       ["graphql"] = function()
         -- configure graphql language server
         lspconfig["graphql"].setup({
@@ -127,6 +128,24 @@ return {
               completion = {
                 callSnippet = "Replace",
               },
+            },
+          },
+        })
+      end,
+      ["gopls"] = function()
+        -- configure gopls server
+        lspconfig["gopls"].setup({
+          capabilities = capabilities,
+          cmd = { "gopls", "serve" },
+          filetypes = { "go", "go.mod" },
+          root_dir = require("lspconfig.util").root_pattern("go.work", "go.mod", ".git"),
+          settings = {
+            gopls = {
+              analyses = {
+                unusedparams = true,
+                shadow = true,
+              },
+              staticcheck = true,
             },
           },
         })
