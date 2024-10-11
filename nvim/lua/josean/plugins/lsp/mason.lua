@@ -46,15 +46,16 @@ return {
     mason_tool_installer.setup({
       ensure_installed = {
         "prettier", -- prettier formatter
+        "goimports", -- go formatter
         "stylua", -- lua formatter
         "isort", -- python formatter
         "black", -- python formatter
         "pylint", -- python linter
         "eslint_d", -- js linter
-        "goimports", -- go formatter
         "golangci-lint", -- go linter
         "gomodifytags", -- go struct tags modifier
         "impl", -- go interface implementation generator
+        "ruff",
       },
     })
   end,
