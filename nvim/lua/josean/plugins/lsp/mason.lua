@@ -56,6 +56,7 @@ return {
         "gomodifytags", -- go struct tags modifier
         "impl", -- go interface implementation generator
         "ruff",
+        "debugpy",
       },
     })
   end,
