@@ -41,3 +41,24 @@ keymap.set("n", "<leader>gf", "<cmd>lua require('gitsigns').diffthis('~1')<cr>",
 keymap.set("n", "<leader>gn", "<cmd>lua require('gitsigns').next_hunk()<cr>", { desc = "Next Hunk" })
 keymap.set("n", "<leader>gU", "<cmd>lua require('gitsigns').reset_buffer()<cr>", { desc = "Unstage All" })
 keymap.set("n", "<leader>gS", "<cmd>lua require('gitsigns').stage_buffer()<cr>", { desc = "Stage All Changes" })
+
+-- Jest Keymaps
+keymap.set(
+  "n",
+  "<leader>jf",
+  "<cmd>lua require('neotest').run.run(vim.fn.expand('%'))<CR>",
+  { desc = "Run current file" }
+)
+keymap.set("n", "<leader>ji", "<cmd>lua require('neotest').summary.toggle()<CR>", { desc = "Toggle info panel" })
+keymap.set("n", "<leader>jj", "<cmd>lua require('neotest').run.run()<CR>", { desc = "Run nearest test" })
+keymap.set("n", "<leader>jl", "<cmd>lua require('neotest').run.run_last()<CR>", { desc = "Run last test" })
+keymap.set(
+  "n",
+  "<leader>jo",
+  "<cmd>lua require('neotest').output.open({ enter = true })<CR>",
+  { desc = "Open test output" }
+)
+keymap.set("n", "<leader>js", "<cmd>lua require('neotest').run.stop()<CR>", { desc = "Stop" })
+keymap.set("n", "<leader>tc", "<cmd>CoverageToggle<cr>", { desc = "Toggle Coverage" })
+keymap.set("n", "<leader>tC", "<cmd>CoverageClear<cr>", { desc = "Clear Coverage" })
+keymap.set("n", "<leader>ts", "<cmd>CoverageSummary<cr>", { desc = "Coverage Summary" })

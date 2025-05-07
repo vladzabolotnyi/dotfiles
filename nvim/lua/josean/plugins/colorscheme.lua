@@ -418,21 +418,41 @@
 --     end,
 --   },
 -- }
+-- return {
+--   "sainnhe/gruvbox-material",
+--   lazy = false,
+--   priority = 1000,
+--   config = function()
+--     -- Optionally configure and load the colorscheme
+--     -- directly inside the plugin declaration.
+--     vim.g.gruvbox_material_enable_italic = true
+--     vim.g.gruvbox_material_background = "hard"
+--     vim.g.gruvbox_material_better_performance = 1
+--
+--     vim.g.gruvbox_material_enable_bold = true
+--     vim.g.gruvbox_material_diagnostic_text_highlight = true
+--     vim.g.gruvbox_material_diagnostic_line_highlight = true
+--     vim.g.gruvbox_material_diagnostic_virtual_text = "colored"
+--     vim.cmd.colorscheme("gruvbox-material")
+--   end,
+-- }
 return {
-  "sainnhe/gruvbox-material",
+  "aktersnurra/no-clown-fiesta.nvim",
+  dependencies = { "rktjmp/lush.nvim" },
   lazy = false,
   priority = 1000,
   config = function()
-    -- Optionally configure and load the colorscheme
-    -- directly inside the plugin declaration.
-    vim.g.gruvbox_material_enable_italic = true
-    vim.g.gruvbox_material_background = "hard"
-    vim.g.gruvbox_material_better_performance = 1
-
-    vim.g.gruvbox_material_enable_bold = true
-    vim.g.gruvbox_material_diagnostic_text_highlight = true
-    vim.g.gruvbox_material_diagnostic_line_highlight = true
-    vim.g.gruvbox_material_diagnostic_virtual_text = "colored"
-    vim.cmd.colorscheme("gruvbox-material")
+    require("no-clown-fiesta").setup({
+      transperent = false,
+      styles = {
+        comments = { italic = true },
+        functions = { bold = true },
+        keywords = { bold = true, italic = true },
+        lsp = { underline = true },
+        match_paren = { underline = true },
+        type = { bold = true },
+      },
+    })
+    vim.cmd([[colorscheme no-clown-fiesta]])
   end,
 }

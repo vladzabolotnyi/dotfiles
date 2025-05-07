@@ -8,28 +8,10 @@ return {
       typescript = { "eslint_d" },
       javascriptreact = { "eslint_d" },
       typescriptreact = { "eslint_d" },
-      html = { "tidy" },
-      css = { "stylelint" },
-      scss = { "stylelint" },
       vue = { "eslint_d" },
       svelte = { "eslint_d" },
       python = { "ruff" },
       go = { "golangci-lint" },
-    }
-
-    lint.linters.tidy = {
-      cmd = "tidy",
-      args = { "-e", "-q" },
-      stream = "stderr",
-      ignore_exitcode = true,
-    }
-
-    lint.linters.stylelint = {
-      cmd = "stylelint",
-      args = { "--formatter", "json", "--stdin-filename", "%filepath" },
-      stdin = true,
-      stream = "stdout",
-      ignore_exitcode = true,
     }
 
     lint.linters["golangci-lint"] = {

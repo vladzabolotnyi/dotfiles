@@ -13,7 +13,7 @@ return {
         typescriptreact = { "eslint_d", "prettier" },
         svelte = { "eslint_d", "prettier" },
         css = { "prettier" },
-        html = { "prettier" },
+        html = { "prettier", "eslint_d" },
         json = { "prettier" },
         yaml = { "prettier" },
         markdown = { "prettier" },
@@ -21,11 +21,12 @@ return {
         lua = { "stylua" },
         python = { "isort", "black" },
         go = { "goimports", "gofmt" },
+        templ = { "templ" },
       },
       format_on_save = {
         lsp_fallback = true,
         async = false,
-        timeout_ms = 1000,
+        timeout_ms = 4000,
       },
     })
 
@@ -33,7 +34,7 @@ return {
       conform.format({
         lsp_fallback = true,
         async = false,
-        timeout_ms = 1000,
+        timeout_ms = 4000,
       })
     end, { desc = "Format file or range (in visual mode)" })
   end,

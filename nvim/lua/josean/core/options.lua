@@ -18,7 +18,7 @@ opt.ignorecase = true -- ignore case when searching
 opt.smartcase = true -- if you include mixed case in your search, assumes you want case-sensitive
 
 -- cursor line
-opt.cursorline = true -- highlight the current cursor line
+opt.cursorline = false -- highlight the current cursor line
 
 -- appearance
 
@@ -40,3 +40,11 @@ opt.splitbelow = true -- split horizontal window to the bottom
 
 -- turn off swapfile
 opt.swapfile = false
+
+-- disable status line
+opt.laststatus = 0
+
+-- folding
+opt.foldlevel = 99
+opt.foldlevelstart = 99
+opt.foldenable = true

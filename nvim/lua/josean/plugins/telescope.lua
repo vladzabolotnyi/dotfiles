@@ -31,6 +31,14 @@ return {
             ["<C-q>"] = actions.send_selected_to_qflist + custom_actions.open_trouble_qflist,
           },
         },
+        layout_strategy = "horizontal",
+        layout_config = {
+          horizontal = {
+            preview_width = 0.65,
+            width = 0.9,
+            height = 0.9,
+          },
+        },
       },
     })
 
