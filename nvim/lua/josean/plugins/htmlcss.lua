@@ -13,6 +13,7 @@ return {
       "blade",
       "php",
       "astro",
+      "templ",
     },
     handlers = {
       definition = {
