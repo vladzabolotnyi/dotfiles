@@ -48,3 +48,13 @@ opt.laststatus = 0
 opt.foldlevel = 99
 opt.foldlevelstart = 99
 opt.foldenable = true
+
+-- making relative numbers more visible
+vim.api.nvim_create_autocmd("ColorScheme", {
+  pattern = "*", -- Apply to any colorscheme
+  callback = function()
+    vim.cmd("hi LineNrAbove ctermfg=white guifg=#E0E0E0")
+    vim.cmd("hi LineNrBelow ctermfg=white guifg=#E0E0E0")
+    vim.cmd("hi LineNr ctermfg=white guifg=#E0E0E0")
+  end,
+})
