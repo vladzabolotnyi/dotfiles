@@ -443,7 +443,7 @@ return {
   priority = 1000,
   config = function()
     require("no-clown-fiesta").setup({
-      transperent = false,
+      transparent = false,
       styles = {
         comments = { italic = true },
         functions = { bold = true },
@@ -453,6 +453,23 @@ return {
         type = { bold = true },
       },
     })
+    -- Define a function to set custom highlights
+    local set_custom_highlights = function()
+      vim.api.nvim_set_hl(0, "@lsp.type.decorator.python", { fg = "#B48EAD", bold = true, italic = true })
+      vim.api.nvim_set_hl(0, "@operator", { fg = "#BF616A" })
+    end
+
+    -- Apply the custom highlights initially
+    set_custom_highlights()
+
+    -- Reapply custom highlights whenever the ColorScheme event fires
+    -- This ensures your custom highlights persist if you switch themes and then switch back,
+    -- or if the colorscheme reloads for any reason.
+    vim.api.nvim_create_autocmd("ColorScheme", {
+      group = vim.api.nvim_create_augroup("NoClownFiestaCustomHighlights", { clear = true }),
+      callback = set_custom_highlights,
+    })
+
     vim.cmd([[colorscheme no-clown-fiesta]])
   end,
 }
