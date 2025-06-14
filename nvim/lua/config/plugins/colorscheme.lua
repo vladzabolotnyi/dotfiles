@@ -446,8 +446,7 @@ return {
       transparent = false,
       styles = {
         comments = { italic = true },
-        functions = { bold = true },
-        keywords = { bold = true, italic = true },
+        keywords = { bold = true },
         lsp = { underline = true },
         match_paren = { underline = true },
         type = { bold = true },
@@ -457,6 +456,9 @@ return {
     local set_custom_highlights = function()
       vim.api.nvim_set_hl(0, "@lsp.type.decorator.python", { fg = "#B48EAD", bold = true, italic = true })
       vim.api.nvim_set_hl(0, "@operator", { fg = "#BF616A" })
+
+      -- I've tried tons of different colors for types but looks like I wanna just bold them
+      vim.api.nvim_set_hl(0, "@type.builtin", { bold = true })
     end
 
     -- Apply the custom highlights initially

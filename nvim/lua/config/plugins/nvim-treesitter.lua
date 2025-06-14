@@ -53,6 +53,7 @@ return {
           "sql",
           "bash",
           "terraform",
+          "groovy",
         },
         incremental_selection = {
           enable = true,
