@@ -1,41 +1,48 @@
 [colors.primary]
-background = "0x151515"
-foreground = "0xd0d0d0"
+# Alacritty's main background and foreground colors
+background = "0x111111" # Your 'background' / 'gray0' color (true black)
+foreground = "0xFFFFFF" # Set to pure white
 
 [colors.cursor]
-text = "0x151515"
-cursor = "0xd0d0d0"
+text = "0x111111" # Cursor text color
+cursor = "0x99cc99" # Your 'green' color for a balanced and clear cursor
 
 [colors.selection]
-text = "0xd0d0d0"
-background = "0x303030"
+# Colors for text selection
+text = "0xFFFFFF"   # Set to pure white
+background = "0x333333" # A slightly lighter gray than background for selection area
 
 [colors.normal]
-black = "0x1c1c1c"
-red = "0xd78787"
-green = "0x87af87"
-yellow = "0xd7d787"
-blue = "0x87afd7"
-magenta = "0xd787d7"
-cyan = "0x87d7d7"
-white = "0xd0d0d0"
+# The base 8 ANSI colors (used for regular text)
+black = "0x111111"   # Your 'background' color
+red = "0xcc6666"     # Your 'red' color
+green = "0x99cc99"   # Your 'green' color
+yellow = "0xf8fe7a"  # Your 'yellow' color
+blue = "0x81a2be"    # Your 'blue' color
+magenta = "0xb294bb" # Your 'violet' color (often maps to magenta)
+cyan = "0x8abeb7"    # Your 'cyan' color
+white = "0xFFFFFF"   # Set to pure white
 
 [colors.bright]
-black = "0x3a3a3a"
-red = "0xd7afaf"
-green = "0xafd7af"
-yellow = "0xd7d7af"
-blue = "0xafd7d7"
-magenta = "0xd7afd7"
-cyan = "0xafd7d7"
-white = "0xe4e4e4"
+# The bright 8 ANSI colors (used for bold text or bright versions of normal colors)
+# Derived by making them slightly lighter or using closest 'bright' Gruvbox-like equivalents.
+black = "0x3a3a3a"   # A common slightly brighter black/dark gray for Alacritty
+red = "0xda7777"     # Slightly lighter than your 'red'
+green = "0xbaddaa"   # Slightly lighter than your 'green'
+yellow = "0xfef601"  # Using your 'pink' color, which is a vibrant yellow-orange
+blue = "0x91b2ce"    # Slightly lighter than your 'blue'
+magenta = "0xc2a4cb" # Slightly lighter than your 'violet'
+cyan = "0x9bcbc6"    # Slightly lighter than your 'cyan'
+white = "0xFFFFFF"   # Set to pure white
 
 [colors.dim]
-black = "0x1a1a1a"
-red = "0xb57373"
-green = "0x739373"
-yellow = "0xb5b573"
-blue = "0x7393b5"
-magenta = "0xb573b5"
-cyan = "0x73b5b5"
-white = "0xababab"
+# The dim 8 ANSI colors (used for dimmed text)
+# Derived by making them slightly darker than the normal colors.
+black = "0x080808"   # Even darker than primary background for dimmed black
+red = "0xa05555"     # Slightly darker than your 'red'
+green = "0x77a077"   # Slightly darker than your 'green'
+yellow = "0xd0d06a"  # Slightly darker than your 'yellow'
+blue = "0x61829e"    # Slightly darker than your 'blue'
+magenta = "0x92749b" # Slightly darker than your 'violet'
+cyan = "0x6a9b97"    # Slightly darker than your 'cyan'
+white = "0xc2b59c"   # This remains an off-white to show the dimming effect

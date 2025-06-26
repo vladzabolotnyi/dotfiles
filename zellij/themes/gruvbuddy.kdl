@@ -1,0 +1,19 @@
+themes {
+  gruvbuddy {
+        fg "#FFFFFF" // Set to pure white
+        bg "#111111" // Your 'background' / 'gray0' color (true black)
+
+        // ANSI colors, matching Alacritty's 'normal' colors (white is pure white)
+        black "#111111"   // Your 'background' color for black
+        red "#cc6666"     // Your 'red' color
+        green "#99cc99"   // Your 'green' color
+        yellow "#f8fe7a"  // Your 'yellow' color
+        blue "#81a2be"    // Your 'blue' color
+        magenta "#b294bb" // Your 'violet' color (used for magenta)
+        cyan "#8abeb7"    // Your 'cyan' color
+        white "#FFFFFF"   // Set to pure white
+
+        // Zellij's 'orange' accent color, matching Alacritty's cursor or Neovim's orange
+        orange "#de935f"  // Your 'orange' color
+    }
+}
