@@ -14,6 +14,8 @@ return {
     "saadparwaiz1/cmp_luasnip", -- for autocompletion
     "rafamadriz/friendly-snippets", -- useful snippets
     "onsails/lspkind.nvim", -- vs-code like pictograms
+    "tpope/vim-dadbod",
+    "kristijanhusak/vim-dadbod-completion",
   },
   config = function()
     local cmp = require("cmp")
@@ -56,6 +58,13 @@ return {
           maxwidth = 50,
           ellipsis_char = "...",
         }),
+      },
+    })
+
+    cmp.setup.filetype({ "sql" }, {
+      sources = {
+        { name = "vim-dadbod-completion" },
+        { name = "buffer" },
       },
     })
   end,

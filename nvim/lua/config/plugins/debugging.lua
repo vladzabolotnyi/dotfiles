@@ -31,17 +31,17 @@ return {
         layouts = {
           {
             elements = {
-              { id = "scopes", size = 0.45 },
-              { id = "watches", size = 0.15 },
+              { id = "scopes",      size = 0.45 },
+              { id = "watches",     size = 0.15 },
               { id = "breakpoints", size = 0.20 },
-              { id = "stacks", size = 0.20 },
+              { id = "stacks",      size = 0.20 },
             },
             size = 55, -- Wider sidebar for better readability
             position = "left",
           },
           {
             elements = {
-              { id = "repl", size = 0.5 },
+              { id = "repl",    size = 0.5 },
               { id = "console", size = 0.5 },
             },
             size = 0.35, -- Taller console area
@@ -58,7 +58,7 @@ return {
         },
         windows = { indent = 1 },
         render = {
-          max_type_length = 60, -- Limits long type signatures
+          max_type_length = 60,  -- Limits long type signatures
           max_value_lines = 100, -- More content for large values
         },
       })
@@ -78,7 +78,7 @@ return {
       -- Configure DAP-Go with best practices
       require("dap-go").setup({
         delve = {
-          path = "dlv",
+          path = vim.fn.exepath("dlv") ~= "" and vim.fn.exepath("dlv") or "/home/linuxbrew/.linuxbrew/bin/dlv",
           args = {},
           build_flags = "",
           initialize_timeout_sec = 20,

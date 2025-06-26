@@ -63,8 +63,8 @@ keymap.set("n", "<leader>tc", "<cmd>CoverageToggle<cr>", { desc = "Toggle Covera
 keymap.set("n", "<leader>tC", "<cmd>CoverageClear<cr>", { desc = "Clear Coverage" })
 keymap.set("n", "<leader>ts", "<cmd>CoverageSummary<cr>", { desc = "Coverage Summary" })
 
--- Centralizing window while half-screen scrolling
-keymap.set("n", "<C-d>", "<C-d>zz")
-keymap.set("n", "<C-u>", "<C-u>zz")
-keymap.set("n", "<C-b>", "<C-b>zz")
-keymap.set("n", "<C-f>", "<C-f>zz")
+-- -- -- Centralizing window while half-screen scrolling
+-- keymap.set("n", "<C-d>", "<C-d>zz")
+-- keymap.set("n", "<C-u>", "<C-u>zz")
+-- keymap.set("n", "<C-b>", "<C-b>zz")
+-- keymap.set("n", "<C-f>", "<C-f>zz")

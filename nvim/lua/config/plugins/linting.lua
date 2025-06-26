@@ -11,7 +11,6 @@ return {
       vue = { "eslint_d" },
       svelte = { "eslint_d" },
       python = { "ruff" },
-      go = { "golangci-lint" },
     }
 
     lint.linters["golangci-lint"] = {
