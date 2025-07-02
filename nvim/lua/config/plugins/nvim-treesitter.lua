@@ -55,6 +55,8 @@ return {
           "terraform",
           "groovy",
         },
+        sync_install = false,
+        auto_install = true,
         incremental_selection = {
           enable = true,
           keymaps = {
