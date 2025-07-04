@@ -97,6 +97,7 @@ return {
           "prismals",
           "pyright",
           "tailwindcss",
+          "htmx",
         },
         automatic_setup = true,
         handlers = {
@@ -160,6 +161,11 @@ return {
           ["templ"] = function()
             require("lspconfig")["templ"].setup({
               -- Specific settings for templ LSP if needed
+            })
+          end,
+          ["htmx"] = function()
+            require("lspconfig")["htmx"].setup({
+              filetypes = { "html", "templ" },
             })
           end,
         },
