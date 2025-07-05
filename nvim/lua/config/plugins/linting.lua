@@ -11,14 +11,8 @@ return {
       vue = { "eslint_d" },
       svelte = { "eslint_d" },
       python = { "ruff" },
-    }
-
-    lint.linters["golangci-lint"] = {
-      cmd = "golangci-lint",
-      args = { "run", "--out-format", "json" },
-      stdin = true,
-      stream = "stdout",
-      ignore_exitcode = true,
+      sql = { "sqlfluff" },
+      go = { "golangcilint" },
     }
 
     local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
