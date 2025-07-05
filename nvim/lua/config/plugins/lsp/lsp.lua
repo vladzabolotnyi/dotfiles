@@ -191,6 +191,7 @@ return {
           "debugpy",
           "delve",
           "htmlhint",
+          "sqlfluff",
         },
       })
     end,

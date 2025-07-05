@@ -1,11 +1,13 @@
 return {
   "stevearc/conform.nvim",
   lazy = true,
-  event = { "BufReadPre", "BufNewFile" }, -- to disable, comment this out
+  event = { "BufReadPre", "BufNewFile" },
   config = function()
     local conform = require("conform")
 
     conform.setup({
+      -- temporaly set DEBUG level to get more info while polishing config
+      log_level = vim.log.levels.DEBUG,
       formatters_by_ft = {
         javascript = { "eslint_d", "prettier" },
         typescript = { "eslint_d", "prettier" },
@@ -22,11 +24,11 @@ return {
         python = { "isort", "black" },
         go = { "goimports" },
         templ = { "templ" },
+        sql = { "sqlfluff" },
       },
-      format_on_save = {
-        lsp_fallback = true,
+      format_after_save = {
         async = true,
-        timeout_ms = 4000,
+        lsp_fallback = true,
       },
     })
 
