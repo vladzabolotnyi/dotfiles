@@ -20,12 +20,12 @@ return {
         graphql = { "prettier" },
         lua = { "stylua" },
         python = { "isort", "black" },
-        go = { "goimports", "gofmt" },
+        go = { "goimports" },
         templ = { "templ" },
       },
       format_on_save = {
         lsp_fallback = true,
-        async = false,
+        async = true,
         timeout_ms = 4000,
       },
     })
