@@ -15,12 +15,20 @@ return {
       "williamboman/mason.nvim",
       "williamboman/mason-lspconfig.nvim",
       "WhoIsSethDaniel/mason-tool-installer.nvim",
+      {
+        "folke/lazydev.nvim",
+        ft = "lua",
+        opts = {
+          library = {
+            { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+          },
+        },
+      },
     },
     config = function()
       -- LSP diagnostic configuration (can be placed here as it's directly related to LSP)
       vim.diagnostic.config({
         virtual_text = true,
-        signs = true,
         underline = true,
         update_in_insert = false,
         severity_sort = false,
@@ -100,6 +108,7 @@ return {
           "htmx",
         },
         automatic_setup = true,
+        automatic_enable = true,
         handlers = {
           function(server_name)
             require("lspconfig")[server_name].setup({
