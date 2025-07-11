@@ -1,3 +1,4 @@
+vim.loader.enable() -- Experimental feature to enable caching and makes nvim launch faster
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({
