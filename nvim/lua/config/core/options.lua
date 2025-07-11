@@ -58,3 +58,12 @@ vim.api.nvim_create_autocmd("ColorScheme", {
     vim.cmd("hi LineNr ctermfg=white guifg=#E0E0E0")
   end,
 })
+
+-- add highlighting while yanking
+vim.api.nvim_create_autocmd("TextYankPost", {
+  desc = "Highlight when yanking text",
+  group = vim.api.nvim_create_augroup("config-highlight-yank", { clear = true }),
+  callback = function()
+    vim.highlight.on_yank()
+  end,
+})
