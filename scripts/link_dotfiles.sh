@@ -1,7 +1,7 @@
 #!/bin/bash
 
-DOTFILES_DIR_NAME="dotfiles"
-CONFIG_TARGET_DIR="$HOME/.test-config"
+DOTFILES_DIR_NAME="dotfiles/config"
+CONFIG_TARGET_DIR="$HOME/.config"
 
 error_exit() {
   echo "Error: $1" >&2
@@ -44,7 +44,19 @@ fi
 
 echo "Validated: Your config links destination directory is: '$CONFIG_TARGET_DIR'"
 
-# TODO: Add creation of symlinks
-# The idea to place all necessary directories in one place, then we can just iterate over directories
-# and create symlinks. Most likely I want to add meaningful names to the directories and add description
-# to README
+echo ""
+echo "Starting symlimk creation from '$DOTFILES_SOURCE_DIR' to '$CONFIG_TARGET_DIR'"
+echo ""
+
+for item in "$DOTFILES_SOURCE_DIR"/*; do
+  [ -e "$item" ] || continue
+
+  item_name=$(basename "$item")
+  target_path="$CONFIG_TARGET_DIR/$item_name"
+
+  ln -s "$item" "$target_path" || error_exit "Failed to create symlink for '$item_name'"
+
+  echo "Successfully linked '$item_name'"
+done
+
+echo "Symlinking process completed!"
