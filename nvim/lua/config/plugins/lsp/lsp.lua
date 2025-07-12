@@ -97,9 +97,10 @@ return {
           "pyright",
           "tailwindcss",
           "htmx",
+          "bashls",
         },
         automatic_setup = true,
-        automatic_enable = true,
+        -- automatic_enable = true,
         handlers = {
           function(server_name)
             require("lspconfig")[server_name].setup({
@@ -209,6 +210,8 @@ return {
           "delve",
           "htmlhint",
           "sqlfluff",
+          "shellcheck",
+          "shfmt",
         },
       })
     end,

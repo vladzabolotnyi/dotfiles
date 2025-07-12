@@ -25,6 +25,7 @@ return {
         go = { "goimports" },
         templ = { "templ" },
         sql = { "sqlfluff" },
+        sh = { "shfmt" },
       },
       format_after_save = {
         async = true,
