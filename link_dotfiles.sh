@@ -1,0 +1,50 @@
+#!/bin/bash
+
+DOTFILES_DIR_NAME="dotfiles"
+CONFIG_TARGET_DIR="$HOME/.test-config"
+
+error_exit() {
+  echo "Error: $1" >&2
+  # exit 1
+}
+
+echo "--- Dotfiles Symlinking Script ---"
+echo "This script will create symbolic links from dotfiles directory"
+echo "to your ~/.config directory"
+echo ""
+echo "Enter the absolute path to the parent directory of your '$DOTFILES_DIR_NAME' folder: "
+read -r ROOT_PREFIX
+
+# -- Input Validation
+if [ -z "$ROOT_PREFIX" ]; then
+  error_exit "Root prefix cannot be empty"
+fi
+
+# Resolve absolute path and normalize it
+# This handles cases like '~/my-dotfiles' or '../my-dotfiles'
+ROOT_PREFIX=$(eval echo "$ROOT_PREFIX")
+ROOT_PREFIX=$(realpath -q "$ROOT_PREFIX" || echo "$ROOT_PREFIX")
+
+if [[ ! -d "$ROOT_PREFIX" ]]; then
+  error_exit "The provided path '$ROOT_PREFIX' does not exist or is not a directory."
+fi
+
+DOTFILES_SOURCE_DIR="$ROOT_PREFIX/$DOTFILES_DIR_NAME"
+
+if [[ ! -d "$DOTFILES_SOURCE_DIR" ]]; then
+  error_exit "The provided path '$DOTFILES_SOURCE_DIR' does not exist or is not a directory."
+fi
+
+echo "Validated: Your dotfiles source directory is: '$DOTFILES_SOURCE_DIR'"
+
+if [[ ! -d "$CONFIG_TARGET_DIR" ]]; then
+  echo "Creating target directory: '$CONFIG_TARGET_DIR'"
+  mkdir -p "$CONFIG_TARGET_DIR" || error_exit "Failed to create '$CONFIG_TARGET_DIR'."
+fi
+
+echo "Validated: Your config links destination directory is: '$CONFIG_TARGET_DIR'"
+
+# TODO: Add creation of symlinks
+# The idea to place all necessary directories in one place, then we can just iterate over directories
+# and create symlinks. Most likely I want to add meaningful names to the directories and add description
+# to README
