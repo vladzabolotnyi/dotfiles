@@ -10,14 +10,14 @@ error_exit() {
 
 echo "--- Dotfiles Symlinking Script ---"
 echo "This script will create symbolic links from dotfiles directory"
-echo "to your ~/.config directory"
+echo "to your '$CONFIG_TARGET_DIR' directory"
 echo ""
 echo "Enter the absolute path to the parent directory of your '$DOTFILES_DIR_NAME' folder: "
 read -r ROOT_PREFIX
 
 # -- Input Validation
 if [ -z "$ROOT_PREFIX" ]; then
-  error_exit "Root prefix cannot be empty"
+  error_exit "Absolute path cannot be empty"
 fi
 
 # Resolve absolute path and normalize it
@@ -35,18 +35,10 @@ if [[ ! -d "$DOTFILES_SOURCE_DIR" ]]; then
   error_exit "The provided path '$DOTFILES_SOURCE_DIR' does not exist or is not a directory."
 fi
 
-echo "Validated: Your dotfiles source directory is: '$DOTFILES_SOURCE_DIR'"
-
 if [[ ! -d "$CONFIG_TARGET_DIR" ]]; then
   echo "Creating target directory: '$CONFIG_TARGET_DIR'"
   mkdir -p "$CONFIG_TARGET_DIR" || error_exit "Failed to create '$CONFIG_TARGET_DIR'."
 fi
-
-echo "Validated: Your config links destination directory is: '$CONFIG_TARGET_DIR'"
-
-echo ""
-echo "Starting symlimk creation from '$DOTFILES_SOURCE_DIR' to '$CONFIG_TARGET_DIR'"
-echo ""
 
 for item in "$DOTFILES_SOURCE_DIR"/*; do
   [ -e "$item" ] || continue
@@ -55,8 +47,4 @@ for item in "$DOTFILES_SOURCE_DIR"/*; do
   target_path="$CONFIG_TARGET_DIR/$item_name"
 
   ln -s "$item" "$target_path" || error_exit "Failed to create symlink for '$item_name'"
-
-  echo "Successfully linked '$item_name'"
 done
-
-echo "Symlinking process completed!"
