@@ -1,7 +1,10 @@
 #!/bin/bash
 
-DOTFILES_DIR_NAME="dotfiles/config"
+DOTFILES_DOTS_SOURCE_DIR="dotfiles/dots"
+DOTFILES_CONFIG_DIR_NAME="dotfiles/config"
+
 CONFIG_TARGET_DIR="$HOME/.config"
+DOTS_TARGET_DIR="$HOME"
 
 error_exit() {
   echo "Error: $1" >&2
@@ -12,7 +15,7 @@ echo "--- Dotfiles Symlinking Script ---"
 echo "This script will create symbolic links from dotfiles directory"
 echo "to your '$CONFIG_TARGET_DIR' directory"
 echo ""
-echo "Enter the absolute path to the parent directory of your '$DOTFILES_DIR_NAME' folder: "
+echo "Enter the absolute path to the parent directory of your '$DOTFILES_CONFIG_DIR_NAME' folder: "
 read -r ROOT_PREFIX
 
 # -- Input Validation
@@ -29,7 +32,7 @@ if [[ ! -d "$ROOT_PREFIX" ]]; then
   error_exit "The provided path '$ROOT_PREFIX' does not exist or is not a directory."
 fi
 
-DOTFILES_SOURCE_DIR="$ROOT_PREFIX/$DOTFILES_DIR_NAME"
+DOTFILES_SOURCE_DIR="$ROOT_PREFIX/$DOTFILES_CONFIG_DIR_NAME"
 
 if [[ ! -d "$DOTFILES_SOURCE_DIR" ]]; then
   error_exit "The provided path '$DOTFILES_SOURCE_DIR' does not exist or is not a directory."
@@ -47,4 +50,15 @@ for item in "$DOTFILES_SOURCE_DIR"/*; do
   target_path="$CONFIG_TARGET_DIR/$item_name"
 
   ln -s "$item" "$target_path" || error_exit "Failed to create symlink for '$item_name'"
+done
+
+DOTS_SOURCE_DIR="$ROOT_PREFIX/$DOTFILES_DOTS_SOURCE_DIR"
+
+for item in "$DOTS_SOURCE_DIR"/.[!.]*; do
+  [ -e "$item" ] || continue
+
+  item_name=$(basename "$item")
+  target_path="$DOTS_TARGET_DIR/$item_name"
+
+  ln "$item" "$target_path" || error_exit "Failed to create hardlink for '$item_name'"
 done

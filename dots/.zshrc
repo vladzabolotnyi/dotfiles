@@ -1,4 +1,3 @@
-# zmodload zsh/zprof
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -22,11 +21,6 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # Skip the not really helping Ubuntu global compinit
 skip_global_compinit=1
-# Set list of themes to pick from when loading at random
-# Setting this variable when ZSH_THEME=random will cause zsh to load
-# a theme from this variable instead of looking in $ZSH/themes/
-# If set to an empty array, this variable will have no effect.
-# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -204,3 +198,18 @@ elif command -v fzf >/dev/null 2>&1; then
     eval "$(fzf --zsh)"
 fi
 ___MY_VMOPTIONS_SHELL_FILE="${HOME}/.jetbrains.vmoptions.sh"; if [ -f "${___MY_VMOPTIONS_SHELL_FILE}" ]; then . "${___MY_VMOPTIONS_SHELL_FILE}"; fi
+
+
+# ---- use via fix -----
+# For some reason when I connect my keyboard and wanna
+# change settings using use-via, chrome is throwing
+# protocol error. To fix that I have to check device id
+# chrome://device-log/
+# is trying to reach chrome and then run next command
+# sudo chown $USER:$USER /dev/hidraw1(id posted in chrome)
+#
+# I have to include user binaries to be executed in CLI
+export PATH="$HOME/bin:$PATH"
+
+# Firefox
+export PATH=/opt/firefox/firefox:$PATH
