@@ -49,6 +49,11 @@ for item in "$DOTFILES_SOURCE_DIR"/*; do
   item_name=$(basename "$item")
   target_path="$CONFIG_TARGET_DIR/$item_name"
 
+  if [ -L "$target_path" ] && [ "$(readlink "$target_path")" = "$item" ]; then
+    echo "'$item_name' is already correctly softlinked. Skipping."
+    continue
+  fi
+
   ln -s "$item" "$target_path" || error_exit "Failed to create symlink for '$item_name'"
 done
 
@@ -59,6 +64,13 @@ for item in "$DOTS_SOURCE_DIR"/.[!.]*; do
 
   item_name=$(basename "$item")
   target_path="$DOTS_TARGET_DIR/$item_name"
+
+  if [ -e "$target_path" ]; then
+    if [ "$(stat -c %i "$item")" = "$(stat -c %i "$target_path")" ]; then
+      echo "'$item_name' is already correctly hardlinked. Skipping."
+      continue
+    fi
+  fi
 
   ln "$item" "$target_path" || error_exit "Failed to create hardlink for '$item_name'"
 done
