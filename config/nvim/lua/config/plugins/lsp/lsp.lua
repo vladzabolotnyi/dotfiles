@@ -98,6 +98,7 @@ return {
           "tailwindcss",
           "htmx",
           "bashls",
+          "templ",
         },
         automatic_setup = true,
         -- automatic_enable = true,
@@ -160,7 +161,9 @@ return {
           end,
           ["templ"] = function()
             require("lspconfig")["templ"].setup({
-              -- Specific settings for templ LSP if needed
+              filetypes = { "templ" },
+              root_dir = require("lspconfig.util").root_pattern("go.mod", "go.work", ".git"),
+              capabilities = require("cmp_nvim_lsp").default_capabilities(),
             })
           end,
           ["htmx"] = function()
@@ -212,6 +215,7 @@ return {
           "sqlfluff",
           "shellcheck",
           "shfmt",
+          "templ",
         },
       })
     end,
