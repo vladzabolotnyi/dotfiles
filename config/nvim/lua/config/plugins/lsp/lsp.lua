@@ -216,6 +216,7 @@ return {
           "shellcheck",
           "shfmt",
           "templ",
+          "rustywind",
         },
       })
     end,
