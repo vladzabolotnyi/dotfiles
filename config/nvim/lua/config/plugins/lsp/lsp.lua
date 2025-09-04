@@ -171,6 +171,11 @@ return {
               filetypes = { "html", "templ" },
             })
           end,
+          ["tailwindcss"] = function()
+            require("lspconfig").tailwindcss.setup({
+              filetypes = { "html", "templ" },
+            })
+          end,
         },
       })
     end,
