@@ -1,10 +1,6 @@
 return {
   "folke/zen-mode.nvim",
   cmd = "ZenMode",
-  -- INFO: Decide later if I need it
-  -- dependencies = {
-  --   "folke/twilight.nvim",
-  -- },
   opts = {
     window = {
       backdrop = 0.95,
