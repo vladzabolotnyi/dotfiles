@@ -1,0 +1,60 @@
+// Alabaster theme for Zellij
+// Based on the Alacritty theme
+// File location: ~/.config/zellij/themes/alabaster.kdl
+
+themes {
+  alabaster {
+    // Base Colors
+    fg "#cecece"
+    bg "#0e1415"
+
+    // ANSI Colors (for UI use)
+    black   "#000000"
+    red     "#d2322d"
+    green   "#6abf40"
+    yellow  "#cd974b" // Main accent
+    blue    "#217EBC"
+    magenta "#9B3596"
+    cyan    "#178F79"
+    white   "#cecece"
+    
+    // Bright Colors (for UI use)
+    orange  "#cd974b" // Using normal yellow as the 'orange' accent
+    gray    "#333333" // Bright Black
+
+    // Selection
+    // Alacritty theme specified black text on selection
+    selection_bg "#293334"
+    selection_fg "#000000"
+
+    // Panes
+    // Inactive pane border
+    pane_border         "#293334"
+    // Active pane border
+    focused_pane_border "#cd974b"
+
+    // Status Bar (Top)
+    bar_bg "#293334" // Using the selection bg to stand out slightly
+    bar_fg "#cecece"
+
+    // Tabs
+    tab_normal_fg "#cecece"
+    tab_normal_bg "#0e1415"
+    tab_active_fg "#0e1415" // Reverse video for active tab
+    tab_active_bg "#cd974b" // Accent color
+
+    // Command Bar (Bottom)
+    command_fg "#cecece"
+    command_bg "#293334"
+    
+    // UI states
+    locked_fg     "#d2322d" // Red
+    locked_bg     "#293334"
+    
+    resize_fg     "#9B3596" // Magenta
+    resize_bg     "#293334"
+    
+    search_fg     "#0e1415" // Background color (black)
+    search_bg     "#dfdf8e" // Bright Yellow
+  }
+}
