@@ -27,6 +27,16 @@ return {
         sql = { "sqlfluff" },
         sh = { "shfmt" },
         bash = { "shfmt" },
+        cucumber = { "gherkin_format" },
+        feature = { "gherkin_format" },
+      },
+
+      formatters = {
+        gherkin_format = {
+          command = "reformat-gherkin",
+          args = { "$FILENAME" },
+          stdin = false, -- This formatter works on files, not stdin
+        },
       },
       format_after_save = {
         async = true,

@@ -222,6 +222,7 @@ return {
           "shfmt",
           "templ",
           "rustywind",
+          "gherkin_format",
         },
       })
     end,
