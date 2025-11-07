@@ -844,6 +844,11 @@ return {
     "tjdevries/colorbuddy.nvim",
     config = function()
       vim.cmd.colorscheme("alabaster")
+
+      vim.api.nvim_set_hl(0, "@function.javascript", { link = "@AlabasterDefinition" })
+      vim.api.nvim_set_hl(0, "@hook", { link = "@AlabasterDefinition" })
+      vim.api.nvim_set_hl(0, "@hook.variable.javascript", { link = "@AlabasterDefinition" })
+      vim.api.nvim_set_hl(0, "@effect.call", { link = "@AlabasterDefinition" })
     end,
   },
   "rktjmp/lush.nvim",
