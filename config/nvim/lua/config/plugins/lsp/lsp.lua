@@ -49,6 +49,11 @@ return {
       vim.api.nvim_create_autocmd("LspAttach", {
         group = vim.api.nvim_create_augroup("UserLspConfig", { clear = true }), -- Clear ensures it's only set once
         callback = function(ev)
+          -- disabling lsp semantic tokens for alabaster theme
+          local client = vim.lsp.get_client_by_id(ev.data.client_id)
+          if client then
+            client.server_capabilities.semanticTokensProvider = nil
+          end
           local opts = { buffer = ev.buf, silent = true }
           local keymap = vim.keymap
 
