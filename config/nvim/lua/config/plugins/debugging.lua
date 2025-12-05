@@ -7,12 +7,71 @@ return {
       "leoluz/nvim-dap-go",
       "theHamsta/nvim-dap-virtual-text",
       "nvim-telescope/telescope-dap.nvim",
+      "simrat39/rust-tools.nvim",
     },
     config = function()
       local dap = require("dap")
       local dapui = require("dapui")
 
-      -- Configure DAP UI with best practices
+      local ok_virtual_text, _ = pcall(require, "nvim-dap-virtual-text")
+      local ok_go, _ = pcall(require, "dap-go")
+      local ok_telescope, _ = pcall(require, "telescope")
+
+      dap.adapters.codelldb = {
+        type = "server",
+        port = "${port}",
+        executable = {
+          command = vim.fn.exepath("codelldb") ~= "" and vim.fn.exepath("codelldb")
+            or vim.fn.stdpath("data") .. "/mason/bin/codelldb",
+          args = { "--port", "${port}" },
+        },
+      }
+
+      dap.configurations.rust = {
+        {
+          name = "Debug Rust Program",
+          type = "codelldb",
+          request = "launch",
+          program = function()
+            local cargo_toml = vim.fn.getcwd() .. "/Cargo.toml"
+            if vim.fn.filereadable(cargo_toml) == 1 then
+              local project_name = vim.fn.fnamemodify(cargo_toml, ":h:t")
+              return vim.fn.getcwd() .. "/target/debug/" .. project_name
+            end
+            return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
+          end,
+          cwd = "${workspaceFolder}",
+          stopOnEntry = false,
+          args = {}, -- Start with empty args, can be overridden
+          terminal = "integrated",
+          sourceLanguages = { "rust" },
+        },
+        -- Simple test configuration
+        {
+          name = "Debug Rust Tests",
+          type = "codelldb",
+          request = "launch",
+          program = function()
+            -- Try to find test executable
+            local handle = io.popen("cargo test --no-run --message-format=json 2>/dev/null")
+            if handle then
+              local result = handle:read("*a")
+              handle:close()
+              for line in result:gmatch("[^\r\n]+") do
+                local ok, json = pcall(vim.json.decode, line)
+                if ok and json.executable then
+                  return json.executable
+                end
+              end
+            end
+            -- Fallback
+            return vim.fn.input("Path to test executable: ", vim.fn.getcwd() .. "/target/debug/", "file")
+          end,
+          cwd = "${workspaceFolder}",
+          args = {},
+        },
+      }
+
       dapui.setup({
         icons = {
           expanded = "▾",
@@ -20,7 +79,6 @@ return {
           current_frame = "→",
         },
         mappings = {
-          -- Use a table to apply multiple mappings
           expand = { "<CR>", "<2-LeftMouse>" },
           open = "o",
           remove = "d",
@@ -31,121 +89,127 @@ return {
         layouts = {
           {
             elements = {
-              { id = "scopes",      size = 0.45 },
-              { id = "watches",     size = 0.15 },
+              { id = "scopes", size = 0.45 },
+              { id = "watches", size = 0.15 },
               { id = "breakpoints", size = 0.20 },
-              { id = "stacks",      size = 0.20 },
+              { id = "stacks", size = 0.20 },
             },
-            size = 55, -- Wider sidebar for better readability
+            size = 55,
             position = "left",
           },
           {
             elements = {
-              { id = "repl",    size = 0.5 },
+              { id = "repl", size = 0.5 },
               { id = "console", size = 0.5 },
             },
-            size = 0.35, -- Taller console area
+            size = 0.35,
             position = "bottom",
           },
         },
         floating = {
           max_height = nil,
           max_width = nil,
-          border = "rounded", -- Cleaner looking borders
+          border = "rounded",
           mappings = {
             close = { "q", "<Esc>" },
           },
         },
         windows = { indent = 1 },
         render = {
-          max_type_length = 60,  -- Limits long type signatures
-          max_value_lines = 100, -- More content for large values
+          max_type_length = 60,
+          max_value_lines = 100,
         },
       })
 
-      -- Optional: Configure DAP virtual text (shows variable values inline)
-      require("nvim-dap-virtual-text").setup({
-        enabled = true,
-        enabled_commands = true,
-        highlight_changed_variables = true,
-        highlight_new_as_changed = false,
-        show_stop_reason = true,
-        commented = false,
-        virt_text_pos = "eol", -- 'eol' | 'inline'
-        all_frames = false,
-      })
+      if ok_virtual_text then
+        require("nvim-dap-virtual-text").setup({
+          enabled = true,
+          enabled_commands = true,
+          highlight_changed_variables = true,
+          highlight_new_as_changed = false,
+          show_stop_reason = true,
+          commented = false,
+          virt_text_pos = "eol",
+          all_frames = false,
+        })
+      end
 
-      -- Configure DAP-Go with best practices
-      require("dap-go").setup({
-        delve = {
-          path = vim.fn.exepath("dlv") ~= "" and vim.fn.exepath("dlv") or "/home/linuxbrew/.linuxbrew/bin/dlv",
-          args = {},
-          build_flags = "",
-          initialize_timeout_sec = 20,
-          port = "${port}",
-        },
-      })
+      if ok_go then
+        require("dap-go").setup({
+          delve = {
+            path = vim.fn.exepath("dlv") ~= "" and vim.fn.exepath("dlv") or "/home/linuxbrew/.linuxbrew/bin/dlv",
+            args = {},
+            build_flags = "",
+            initialize_timeout_sec = 20,
+            port = "${port}",
+          },
+        })
+      end
 
-      -- Recommended: Close dapui automatically when debugging ends
-      dap.listeners.before.attach.dapui_config = function()
+      dap.listeners.after.event_initialized["dapui_config"] = function()
         dapui.open()
       end
-      dap.listeners.before.launch.dapui_config = function()
-        dapui.open()
-      end
-      dap.listeners.before.event_terminated.dapui_config = function()
+      dap.listeners.before.event_terminated["dapui_config"] = function()
         dapui.close()
       end
-      dap.listeners.before.event_exited.dapui_config = function()
+      dap.listeners.before.event_exited["dapui_config"] = function()
         dapui.close()
       end
 
-      -- Setup nice looking icons for breakpoints and the current position
-      vim.fn.sign_define("DapBreakpoint", { text = "🔴", texthl = "DapBreakpoint", linehl = "", numhl = "" })
-      vim.fn.sign_define(
-        "DapBreakpointCondition",
-        { text = "🟡", texthl = "DapBreakpointCondition", linehl = "", numhl = "" }
-      )
-      vim.fn.sign_define("DapLogPoint", { text = "📝", texthl = "DapLogPoint", linehl = "", numhl = "" })
-      vim.fn.sign_define(
-        "DapStopped",
-        { text = "▶️", texthl = "DapStopped", linehl = "DapStoppedLine", numhl = "" }
-      )
+      vim.fn.sign_define("DapBreakpoint", { text = "🔴", texthl = "", linehl = "", numhl = "" })
+      vim.fn.sign_define("DapBreakpointCondition", { text = "🟡", texthl = "", linehl = "", numhl = "" })
+      vim.fn.sign_define("DapLogPoint", { text = "📝", texthl = "", linehl = "", numhl = "" })
+      vim.fn.sign_define("DapStopped", { text = "▶️", texthl = "", linehl = "DapStoppedLine", numhl = "" })
 
-      -- Keymaps with helpful descriptions
-      vim.keymap.set("n", "<leader>db", dap.toggle_breakpoint, { desc = "DAP: Toggle Breakpoint" })
+      vim.keymap.set("n", "<leader>db", dap.toggle_breakpoint, { desc = "Toggle breakpoint" })
       vim.keymap.set("n", "<leader>dB", function()
         dap.set_breakpoint(vim.fn.input("Breakpoint condition: "))
-      end, { desc = "DAP: Set Conditional Breakpoint" })
+      end, { desc = "Set conditional breakpoint" })
       vim.keymap.set("n", "<leader>dl", function()
         dap.set_breakpoint(nil, nil, vim.fn.input("Log point message: "))
-      end, { desc = "DAP: Set Log Point" })
-      vim.keymap.set("n", "<leader>dc", dap.continue, { desc = "DAP: Continue" })
-      vim.keymap.set("n", "<leader>dr", dapui.open, { desc = "DAP: Open UI" })
-      vim.keymap.set("n", "<leader>dR", function()
-        dapui.open({ reset = true })
-      end, { desc = "DAP: Reset UI" })
-      vim.keymap.set("n", "<leader>dx", dapui.close, { desc = "DAP: Close UI" })
-      vim.keymap.set("n", "<leader>ds", dap.step_over, { desc = "DAP: Step Over" })
-      vim.keymap.set("n", "<leader>di", dap.step_into, { desc = "DAP: Step Into" })
-      vim.keymap.set("n", "<leader>do", dap.step_out, { desc = "DAP: Step Out" })
-      vim.keymap.set("n", "<leader>dq", dap.terminate, { desc = "DAP: Terminate" })
-      vim.keymap.set("n", "<leader>dp", dap.pause, { desc = "DAP: Pause" })
-      vim.keymap.set("n", "<leader>dw", function()
-        require("dapui").float_element("watches", { enter = true })
-      end, { desc = "DAP: Add Watch" })
-      vim.keymap.set("n", "<leader>dS", function()
-        require("dapui").float_element("scopes", { enter = true })
-      end, { desc = "DAP: View Scopes" })
+      end, { desc = "Set log point" })
+      vim.keymap.set("n", "<leader>dc", dap.continue, { desc = "Start/continue debugging" })
+      vim.keymap.set("n", "<leader>ds", dap.step_over, { desc = "Step over" })
+      vim.keymap.set("n", "<leader>di", dap.step_into, { desc = "Step into" })
+      vim.keymap.set("n", "<leader>do", dap.step_out, { desc = "Step out" })
+      vim.keymap.set("n", "<leader>dq", dap.terminate, { desc = "Stop debugging" })
+      vim.keymap.set("n", "<leader>dp", dap.pause, { desc = "Pause debugging" })
+
+      vim.keymap.set("n", "<leader>du", dapui.toggle, { desc = "Toggle DAP UI" })
+      vim.keymap.set("n", "<leader>de", function()
+        dapui.eval(vim.fn.input("Expression: "))
+      end, { desc = "Evaluate expression" })
+      vim.keymap.set("v", "<leader>de", function()
+        dapui.eval()
+      end, { desc = "Evaluate selection" })
       vim.keymap.set("n", "<leader>dh", function()
         require("dap.ui.widgets").hover()
-      end, { desc = "DAP: Hover Variable" })
+      end, { desc = "Hover variables" })
+      vim.keymap.set("n", "<leader>dS", function()
+        require("dap.ui.widgets").centered_float(require("dap.ui.widgets").scopes)
+      end, { desc = "Show scopes" })
 
-      -- Optional: Telescope integration (if you have Telescope installed)
-      -- Uncomment if you want to use Telescope integration
-      -- require('telescope').load_extension('dap')
-      -- vim.keymap.set("n", "<leader>df", ":Telescope dap frames<CR>", { desc = "DAP: List Frames" })
-      -- vim.keymap.set("n", "<leader>dC", ":Telescope dap commands<CR>", { desc = "DAP: List Commands" })
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = "rust",
+        callback = function()
+          vim.keymap.set("n", "<leader>drb", function()
+            vim.cmd("!cargo build")
+            print("Build completed. Start debugging with <leader>dc")
+          end, { buffer = true, desc = "Build Rust project" })
+
+          vim.keymap.set("n", "<leader>drt", function()
+            dap.run(dap.configurations.rust[2]) -- Test configuration
+          end, { buffer = true, desc = "Debug Rust tests" })
+        end,
+      })
+
+      if ok_telescope then
+        pcall(function()
+          require("telescope").load_extension("dap")
+          vim.keymap.set("n", "<leader>df", ":Telescope dap frames<CR>", { desc = "Debug frames" })
+          vim.keymap.set("n", "<leader>dC", ":Telescope dap commands<CR>", { desc = "Debug commands" })
+        end)
+      end
     end,
   },
   {
@@ -156,23 +220,60 @@ return {
     config = function()
       local dap = require("dap")
 
-      -- Use Mason's debugpy if available
-      local path = "~/.local/share/nvim/mason/packages/debugpy/venv/bin/python3"
-      require("dap-python").setup(path)
+      -- Find debugpy
+      local mason_path = vim.fn.stdpath("data") .. "/mason/packages/debugpy/venv/bin/python"
+      local system_path = vim.fn.exepath("python3")
 
-      -- Add Python test configurations
-      require("dap-python").test_runner = "pytest"
+      local debugpy_path = vim.fn.filereadable(mason_path) == 1 and mason_path or system_path
 
-      -- Python-specific keymaps
+      require("dap-python").setup(debugpy_path, {
+        pythonPath = function()
+          local venv = os.getenv("VIRTUAL_ENV")
+          return venv and venv .. "/bin/python" or debugpy_path
+        end,
+        console = "integratedTerminal",
+        justMyCode = false,
+      })
+
+      -- Python keymaps
       vim.keymap.set("n", "<leader>dpm", function()
         require("dap-python").test_method()
-      end, { desc = "DAP Python: Test Method" })
+      end, { desc = "Debug Python method" })
       vim.keymap.set("n", "<leader>dpc", function()
         require("dap-python").test_class()
-      end, { desc = "DAP Python: Test Class" })
-      vim.keymap.set("n", "<leader>dps", function()
-        require("dap-python").debug_selection()
-      end, { desc = "DAP Python: Debug Selection" })
+      end, { desc = "Debug Python class" })
+    end,
+  },
+  {
+    "simrat39/rust-tools.nvim",
+    ft = "rust",
+    config = function()
+      local rt = require("rust-tools")
+      rt.setup({
+        tools = {
+          hover_actions = { auto_focus = true },
+          inlay_hints = {
+            auto = true,
+            show_parameter_hints = true,
+          },
+        },
+        server = {
+          on_attach = function(_, bufnr)
+            vim.keymap.set(
+              "n",
+              "<leader>ra",
+              rt.hover_actions.hover_actions,
+              { buffer = bufnr, desc = "Rust hover actions" }
+            )
+            vim.keymap.set(
+              "n",
+              "<leader>rr",
+              rt.code_action_group.code_action_group,
+              { buffer = bufnr, desc = "Rust code actions" }
+            )
+          end,
+        },
+      })
     end,
   },
 }
