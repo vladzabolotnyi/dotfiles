@@ -8,11 +8,15 @@ return {
       -- temporaly set DEBUG level to get more info while polishing config
       log_level = vim.log.levels.DEBUG,
       formatters_by_ft = {
-        javascript = { "eslint_d", "prettier" },
-        typescript = { "eslint_d", "prettier" },
-        javascriptreact = { "eslint_d", "prettier", "rustywind" },
-        typescriptreact = { "eslint_d", "prettier", "rustywind" },
-        svelte = { "eslint_d", "prettier", "rustywind" },
+        -- javascript = { "eslint_d", "prettier" },
+        -- typescript = { "eslint_d", "prettier" },
+        -- javascriptreact = { "eslint_d", "prettier", "rustywind" },
+        -- typescriptreact = { "eslint_d", "prettier", "rustywind" },
+        javascript = { "prettier" },
+        typescript = { "prettier" },
+        javascriptreact = { "prettier", "rustywind" },
+        typescriptreact = { "prettier", "rustywind" },
+        svelte = { "prettier", "rustywind" },
         css = { "prettier" },
         scss = { "prettier" },
         html = { "prettier", "eslint_d", "rustywind" },
@@ -29,6 +33,8 @@ return {
         bash = { "shfmt" },
         cucumber = { "gherkin_format" },
         feature = { "gherkin_format" },
+        rust = { "rustfmt" },
+        toml = { "taplo" },
       },
 
       formatters = {

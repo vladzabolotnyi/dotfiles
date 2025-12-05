@@ -83,6 +83,18 @@ return {
           keymap.set("n", "K", vim.lsp.buf.hover, opts) -- show documentation for what is under cursor
           opts.desc = "Restart LSP"
           keymap.set("n", "<leader>rs", ":LspRestart<CR>", opts) -- mapping to restart lsp if necessary
+
+          -- Rust additional keys
+          if vim.bo[ev.buf].filetype == "rust" then
+            opts.desc = "Rust: Run cargo check"
+            keymap.set("n", "<leader>rc", "<cmd>!cargo check<CR>", opts)
+            opts.desc = "Rust: Run cargo build"
+            keymap.set("n", "<leader>rb", "<cmd>!cargo build<CR>", opts)
+            opts.desc = "Rust: Run cargo run"
+            keymap.set("n", "<leader>rr", "<cmd>!cargo run<CR>", opts)
+            opts.desc = "Rust: Run cargo test"
+            keymap.set("n", "<leader>rt", "<cmd>!cargo test<CR>", opts)
+          end
         end,
       })
 
@@ -104,6 +116,7 @@ return {
           "htmx",
           "bashls",
           "templ",
+          "rust_analyzer",
         },
         automatic_setup = true,
         -- automatic_enable = true,
@@ -182,6 +195,39 @@ return {
             })
           end,
         },
+        ["rust_analyzer"] = function()
+          require("lspconfig")["rust_analyzer"].setup({
+            capabilities = require("cmp_nvim_lsp").default_capabilities(),
+            settings = {
+              ["rust-analyzer"] = {
+                checkOnSave = {
+                  command = "clippy",
+                  extraArgs = { "--no-deps" },
+                },
+                diagnostics = {
+                  disabled = { "unresolved-import" },
+                },
+                cargo = {
+                  loadOutDirsFromCheck = true,
+                  buildScripts = {
+                    enable = true,
+                  },
+                },
+                procMacro = {
+                  enable = true,
+                },
+              },
+            },
+            on_attach = function(client, bufnr)
+              vim.api.nvim_create_autocmd("BufWritePre", {
+                buffer = bufnr,
+                callback = function()
+                  vim.lsp.buf.format({ async = false })
+                end,
+              })
+            end,
+          })
+        end,
       })
     end,
   },
@@ -228,6 +274,9 @@ return {
           "templ",
           "rustywind",
           "gherkin_format",
+          "rust_analyzer",
+          "rustfmt",
+          "codelldb",
         },
       })
     end,
