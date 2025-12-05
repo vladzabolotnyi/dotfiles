@@ -213,3 +213,10 @@ export PATH="$HOME/bin:$PATH"
 
 # Firefox
 export PATH=/opt/firefox/firefox:$PATH
+
+# bun completions
+[ -s "/home/zabftft/.bun/_bun" ] && source "/home/zabftft/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
