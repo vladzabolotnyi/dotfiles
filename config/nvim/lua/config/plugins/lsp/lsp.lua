@@ -273,9 +273,7 @@ return {
           "shfmt",
           "templ",
           "rustywind",
-          "gherkin_format",
           "rust_analyzer",
-          "rustfmt",
           "codelldb",
         },
       })
